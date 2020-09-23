@@ -1,0 +1,66 @@
+"ABBREVIATION","NAME","TYPE","POP"
+"AL","Alabama","",4908620
+"AK","Alaska","",734002
+"AZ","Arizona","",7378490
+"AR","Arkansas","",3039000
+"CA","California","",39937500
+"CO","Colorado","",5845530
+"CT","Connecticut","",3563080
+"DE","Delaware","",982895
+"FL","Florida","",21993000
+"GA","Georgia","",10736100
+"HI","Hawaii","",1412690
+"ID","Idaho","",1826160
+"IL","Illinois","",12659700
+"IN","Indiana","",6745350
+"IA","Iowa","",3179850
+"KS","Kansas","",2910360
+"KY","Kentucky","",4499690
+"LA","Louisiana","",4645180
+"ME","Maine","",1345790
+"MD","Maryland","",6083120
+"MA","Massachusetts","",6976600
+"MI","Michigan","",10045000
+"MN","Minnesota","",5700670
+"MS","Mississippi","",2989260
+"MO","Missouri","",6169270
+"MT","Montana","",1086760
+"NE","Nebraska","",1952570
+"NV","Nevada","",3139660
+"NH","New Hampshire","",1371250
+"NJ","New Jersey","",8936570
+"NM","New Mexico","",2096640
+"NY","New York","",19440500
+"NC","North Carolina","",10611900
+"ND","North Dakota","",761723
+"OH","Ohio","",11747700
+"OK","Oklahoma","",3954820
+"OR","Oregon","",4301090
+"PA","Pennsylvania","",12820900
+"RI","Rhode Island","",1056160
+"SC","South Carolina","",5210100
+"SD","South Dakota","",903027
+"TN","Tennessee","",6897580
+"TX","Texas","",29472300
+"UT","Utah","",3282120
+"VT","Vermont","",628061
+"VA","Virginia","",8626210
+"WA","Washington","",7797100
+"WV","West Virginia","",1778070
+"WI","Wisconsin","",5851750
+"WY","Wyoming","",567025
+"AS","American Samoa","territory",55191
+"DC","District of Columbia","territory",720687
+"FM","Federated States of Micronesia","territory",
+"GU","Guam","territory",168775
+"MH","Marshall Islands","territory",
+"MP","Northern Mariana Islands","territory",57559
+"PW","Palau","territory",
+"PR","Puerto Rico","territory",3032160
+"VI","Virgin Islands","territory",104425
+"AE","Armed Forces Africa","military",
+"AA","Armed Forces Americas","military",
+"AE","Armed Forces Canada","military",
+"AE","Armed Forces Europe","military",
+"AE","Armed Forces Middle East","military",
+"AP","Armed Forces Pacific","military",

@@ -1,0 +1,1 @@
+@java -jar C:\Bin\covid19.jar %*
