@@ -34,44 +34,46 @@
 (defn print-table [table]
   (println "Date           Cases     Daily    7d-avg   28d-avg    Deaths     Daily    7d-avg   28d-avg")
   (doseq [entry table]
-    (println (format "%s%10d%10d%10.1f%10.1f%10d%10d%10.1f%10.1f"
-                     (nth entry 0)
-                     (nth entry 1)
-                     (nth entry 2)
-                     (nth entry 3)
-                     (nth entry 4)
-                     (nth entry 5)
-                     (nth entry 6)
-                     (nth entry 7)
-                     (nth entry 8)))))
+    (println (apply format "%s%10d%10d%10.1f%10.1f%10d%10d%10.1f%10.1f" entry))))
 
 (defn loc-str [entry]
   (if (:county entry)
     (str (:county entry) ", " (:state entry))
     (:state entry)))
 
-(defn print-fips [data type search]
+(defn location-and-fips-vector [data]
+  (sort (into #{} (map #(vector (loc-str %) (:fips %)) data))))
+
+(defn print-fips [data search]
   (let [pat (re-pattern (str "(?i)" search))
-        mapping (sort (into #{} (map #(vector (loc-str %) (:fips %)) data)))]
+        mapping (location-and-fips-vector data)]
     (doseq [[loc fips] mapping]
       (when (re-find pat loc)
         (println (str loc " -> FIPS " fips))))))
 
+(defn search [options]
+  (print-fips @data-states (:search options))
+  (print-fips @data-counties (:search options)))
+
+(defn generate-table [fips days]
+  (let [data-set (if (< fips 100) @data-states @data-counties)
+        table (cp/gen-data-table days (cp/filter-by-fips fips data-set))]
+    (print-table table)))
+
+(defn generate-statistics [arguments options]
+  (let [location (second arguments)
+        days (:days options)]
+    (if-let [fips (or (cu/string-to-long location)
+                      (@cd/fips-map (cu/make-location-key @state-lookup location)))]
+      (generate-table fips days)
+      (println (str "Invalid location '" (second arguments) "'")))))
+
 (defn -main [& args]
-  (let [{:keys [options arguments errors summary]} (parse-opts args cli-options)]
+  (let [{:keys [options arguments summary]} (parse-opts args cli-options)]
     (if
      (:help options) (println summary)
      (do
        (initialize (first arguments))
        (cond
-         (:search options) (do
-                             (print-fips @data-states :state (:search options))
-                             (print-fips @data-counties :county (:search options)))
-         :else (let [location (second arguments)
-                     days (:days options)]
-                 (if-let [fips (or (cu/string-to-long location)
-                                   (@cd/fips-map (cu/make-location-key @state-lookup location)))]
-                   (let [data-set (if (< fips 100) @data-states @data-counties)
-                         table (cp/gen-data-table days (cp/filter-by-fips fips data-set))]
-                     (print-table table))
-                   (println (str "Invalid location '" (second arguments) "'")))))))))
+         (:search options) (search options)
+         :else (generate-statistics arguments options))))))

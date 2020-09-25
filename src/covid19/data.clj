@@ -19,13 +19,15 @@
         (reset! custom-fips-counter fips)
         (str fips)))))
 
+(defn fix-missing-fips [x]
+  (if (= (:fips x) "")
+    (assoc x :fips (custom-fips x))
+    x))
+
 (defn fix-fips
   "Some data entries have an empty string for the fips code, so replace it with a custom value"
   [data]
-  (map #(if (= (:fips %) "")
-          (assoc % :fips (custom-fips %))
-          %)
-       data))
+  (map fix-missing-fips data))
 
 (defn make-header
   "Convert CSV string header to keywords"
@@ -40,26 +42,29 @@
          (->> (first data) (make-header) (repeat))
          (rest data))))
 
+(defn add-location-lookup [m entry]
+  (let [name (lower-case (:name entry))
+        pop (cu/string-to-long (:pop entry))]
+    (-> m
+        (assoc (lower-case (:abbreviation entry)) [name pop])
+        (assoc (lower-case name) [name pop]))))
+
 (defn state-lookup-table
   "Create state abbreviation to state name lookup map"
   [source]
-  (reduce (fn [m entry]
-            (let [name (lower-case (:name entry))
-                  pop (cu/string-to-long (:pop entry))]
-              (-> m
-                  (assoc (lower-case (:abbreviation entry)) [name pop])
-                  (assoc (lower-case name) [name pop]))))
-          {}
-          (parse-csv-data source)))
+  (reduce add-location-lookup {} (parse-csv-data source)))
+
+(defn lowercase-location [e]
+  (if (:county e)
+    [(lower-case (:state e)) (lower-case (:county e))]
+    [(lower-case (:state e))]))
+
+(defn update-fips-map-for-entry [m e]
+  (let [k (lowercase-location e)]
+    (assoc m k (:fips e))))
 
 (defn update-fips-map [fips-map data]
-  (reduce (fn [m e]
-            (let [k (if (:county e)
-                      [(lower-case (:state e)) (lower-case (:county e))]
-                      [(lower-case (:state e))])]
-              (assoc m k (:fips e))))
-          fips-map
-          data))
+  (reduce update-fips-map-for-entry fips-map data))
 
 (defn parse-covid-data
   "Read and parse Covid-19 data"
