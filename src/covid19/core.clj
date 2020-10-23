@@ -1,4 +1,5 @@
 (ns covid19.core
+  (:require [clojure.string :as s])
   (:require [clojure.java.io :refer [reader resource]])
   (:require [clojure.tools.cli :refer [parse-opts]])
   (:require [covid19.data :as cd])
@@ -36,22 +37,28 @@
   (doseq [entry table]
     (println (apply format "%s%10d%10d%10.1f%10.1f%10d%10d%10.1f%10.1f" entry))))
 
-(defn loc-str [entry]
-  (if (:county entry)
-    (str (:county entry) ", " (:state entry))
-    (:state entry)))
+(defn loc-str
+  "Generate location string for FIPS search"
+  [entry]
+  (s/join ", " (filter identity [(:county entry) (:state entry)])))
 
-(defn location-and-fips-vector [data]
+(defn location-and-fips-vector
+  "Return sorted unique sequence of locations with FIPS code"
+  [data]
   (sort (into #{} (map #(vector (loc-str %) (:fips %)) data))))
 
-(defn print-fips [data search]
+(defn print-fips
+  "Display all FIPS locations and FIPS code that match the search string"
+  [data search]
   (let [pat (re-pattern (str "(?i)" search))
         mapping (location-and-fips-vector data)]
     (doseq [[loc fips] mapping]
       (when (re-find pat loc)
         (println (str loc " -> FIPS " fips))))))
 
-(defn search [options]
+(defn search
+  "Search states and county data for FIPS codes"
+  [options]
   (print-fips @data-states (:search options))
   (print-fips @data-counties (:search options)))
 
