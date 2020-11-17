@@ -6,7 +6,7 @@ A simple table generator of Covid-19 statistics based on the NY Times Covid-19 g
 
     $ java -jar covid19.jar [options] <data directory> <location>
 
-Location is of the form (without brackets) `state`, `county, state`, or `fips number`.
+Location is of the form `state`, `county, state`, or `fips number`.
 
 ## Options
 
