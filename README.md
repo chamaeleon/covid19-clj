@@ -1,18 +1,20 @@
 # covid19
 
-A simple table generator of Covid-19 statistics based on the NY Times Covid-19 github data repository. 
-
-## Installation
-
-Download from http://example.com/FIXME.
+A simple table generator of Covid-19 statistics based on the NY Times Covid-19 github data repository, implemented in Clojure.
 
 ## Usage
 
-    $ java -jar covid19.jar [options] <data directory> <state or county, state>
+    $ java -jar covid19.jar [options] <data directory> <location>
+
+Location is of the form (without brackets) <state>, <county, state>, or <fips number>.
 
 ## Options
 
-
+Option | Description
+-------|------------
+-d, --days <n> | Number of days to output, defaults to 28
+-s, --search <string> | Simplistic search for fips numbers
+-h, --help | Display help
 
 ## Examples
 
@@ -26,3 +28,10 @@ Date           Cases     Daily    7d-avg   28d-avg    Deaths     Daily    7d-avg
 
 ## License
 
+Copyright 2020, Lars Nilsson
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
