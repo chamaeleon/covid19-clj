@@ -19,10 +19,12 @@
         (reset! custom-fips-counter fips)
         (str fips)))))
 
-(defn fix-missing-fips [x]
-  (if (= (:fips x) "")
-    (assoc x :fips (custom-fips x))
-    x))
+(defn fix-missing-fips
+  "Add a custom fips number to data entries missing it"
+  [entry]
+  (if (= (:fips entry) "")
+    (assoc entry :fips (custom-fips entry))
+    entry))
 
 (defn fix-fips
   "Some data entries have an empty string for the fips code, so replace it with a custom value"
@@ -55,19 +57,17 @@
   (reduce add-location-lookup {} (parse-csv-data source)))
 
 (defn lowercase-location [e]
-  (if (:county e)
-    [(lower-case (:state e)) (lower-case (:county e))]
-    [(lower-case (:state e))]))
+  (map lower-case (filter identity [(:state e) (:county e)])))
 
-(defn update-fips-map-for-entry [m e]
+(defn update-fips-map-entry [m e]
   (let [k (lowercase-location e)]
     (assoc m k (:fips e))))
 
 (defn update-fips-map [fips-map data]
-  (reduce update-fips-map-for-entry fips-map data))
+  (reduce update-fips-map-entry fips-map data))
 
 (defn parse-covid-data
-  "Read and parse Covid-19 data"
+  "Read and parse Covid-19 data, then add (not replace) to fips-map atom."
   [source]
   (let [data (->> (parse-csv-data source)
              (fix-fips)

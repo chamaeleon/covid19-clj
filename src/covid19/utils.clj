@@ -3,7 +3,7 @@
   (:gen-class))
 
 (defn string-to-long
-  "Convert a string into a long, returning 0 if it fails"
+  "Convert a string into a long, returning nil if it fails"
   [s]
   (try (Long/parseLong s)
        (catch Exception _ nil)))
