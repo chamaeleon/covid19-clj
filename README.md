@@ -12,9 +12,9 @@ Location is of the form `state`, `county, state`, or `fips number`.
 
 Option | Description
 -------|------------
--d, --days <n> | Number of days to output, defaults to 28
--s, --search <string> | Simplistic search for fips numbers
--h, --help | Display help
+`-d <n>`, `--days <n>`  | Number of days to output, defaults to 28
+`-s <string>`, `--search <string>` | Simplistic search for fips numbers
+`-h`, `--help` | Display help
 
 ## Examples
 
